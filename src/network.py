@@ -53,6 +53,7 @@ class Network():
         tracking progress, but slows things down substantially."""
         if test_data: n_test = len(test_data)
         n = len(training_data)
+        sucess = []
         for j in xrange(epochs):
             random.shuffle(training_data)
             mini_batches = [
@@ -60,11 +61,14 @@ class Network():
                 for k in xrange(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
+            tmp = self.evaluate(test_data)
             if test_data:
                 print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)
+                    j, tmp , n_test)
+                sucess.append(tmp)
             else:
                 print "Epoch {0} complete".format(j)
+        return sucess
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
